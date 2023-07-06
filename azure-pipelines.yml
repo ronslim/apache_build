@@ -20,4 +20,4 @@ steps:
       
       echo Hello world
       
-      kubectl create deployment selenium-hub --image selenium/hub:3.9.0 --port 4444
+      microk8s.kubectl create deployment selenium-hub --image selenium/hub:3.9.0 --port 4444
