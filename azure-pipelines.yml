@@ -16,8 +16,16 @@ steps:
 - task: CmdLine@2
   inputs:
     script: |
-      echo Write your commands here
+      echo Start Initializing Selenium Hub and Firefox and Google Chrome Node Grids
       
-      echo Hello world
       
       microk8s.kubectl create deployment selenium-hub --image selenium/hub:3.9.0 --port 4444
+      microk8s.kubectl expose deployment selenium-hub --type=ClusterIP
+      microk8s.kubectl create deployment selenium-node-chrome --image selenium/node-chrome:3.9.1
+      microk8s.kubectl expose deployment selenium-node-chrome --type=ClusterIP --port 4444
+      microk8s.kubectl set env deployment/selenium-node-chrome --env="HUB_PORT_4444_TCP_ADDR=selenium-hub" --env="HUB_PORT_4444_TCP_PORT=4444"
+      microk8s.kubectl create deployment selenium-node-firefox --image selenium/node-firefox:3.9.1
+      microk8s.kubectl expose deployment selenium-node-firefox --type=ClusterIP --port 4444
+      microk8s.kubectl set env deployment/selenium-node-firefox --env="HUB_PORT_4444_TCP_ADDR=selenium-hub" --env="HUB_PORT_4444_TCP_PORT=4444"
+      microk8s.kubectl scale deployment --replicas 2 selenium-node-chrome
+      microk8s.kubectl scale deployment --replicas 2 selenium-node-firefox
