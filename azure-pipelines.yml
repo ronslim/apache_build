@@ -29,3 +29,4 @@ steps:
       microk8s.kubectl set env deployment/selenium-node-firefox --env="HUB_PORT_4444_TCP_ADDR=selenium-hub" --env="HUB_PORT_4444_TCP_PORT=4444"
       microk8s.kubectl scale deployment --replicas 2 selenium-node-chrome
       microk8s.kubectl scale deployment --replicas 2 selenium-node-firefox
+      sleep 180
